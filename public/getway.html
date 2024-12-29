@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="css/media.css">
+    <link rel="stylesheet" href="css/getway.css">
+
+    <title>Getway</title>
+</head>
+<body>
+
+
+<!--CONTENT MAIN START-->
+<section class="getway">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+        <a href="cart.html" class="back-to-cart">
+            <i class="fas fa-arrow-left"></i>
+
+            <h2 id="table-info" style="text-align: center; margin-bottom: 20px;">Table: Loading...</h2>
+
+        </a>
+    </nav>
+      <form id="getway-form" class="custom-form">
+          <div class="codes">
+              <input type="text" class="form-control" placeholder="do u have a code?">
+              <p>Click here to enter your code</p>
+          </div>
+          
+          <h3 class="head">Your order</h3>
+          <div class="table-responsive cst-table">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col">Product</th>
+                          <th scope="col">Total</th>
+                      </tr>
+                  </thead>
+                  <tbody id="theOrder">
+                      <!-- Order  will be dynamically inserted here -->
+                  </tbody>
+              </table>
+          </div>
+
+
+
+        
+
+
+          <div class="Payment">
+            <div class="card_radio" id="cash-option">
+                <div class="radio_styl">
+                    <input id="radio-cash" class="radio-style" name="payment-method" type="radio">
+                    <label for="radio-cash" class="radio-style-1-label">Cash</label>
+                </div>
+                <p>Pay After you pick up your order.</p>
+            </div>
+        
+            <div class="card_radio" id="card-option" style="display: block;">
+                <div class="radio_styl">
+                    <input id="radio-card" class="radio-style" name="payment-method" type="radio" checked>
+                    <label for="radio-card" class="radio-style-1-label">Mastercard/Visa/Knet</label>
+                </div>
+                <p>Your personal data will be used to process your order</p>
+            </div>
+            <div class="card_radio" id="card-option" style="display: block;">
+                <div class="radio_styl">
+                    <input id="radio-card" class="radio-style" name="payment-method" type="radio" checked>
+                    <button id="apple-pay-button"  for="radio-card" class="radio-style-1-label">Apple Pay</button>
+
+                </div>
+                <p>Your personal data will be used to process your order</p>
+            </div>
+        </div>
+          <button type="submit" class="btn btn-primary">Place Order </button>
+      </form>
+  </div>
+</section>
+
+    
+
+    <!-- Optional JavaScript --> 
+    <!-- jQuery first, then Popper.js, then Bootstrap JS --> 
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/getway.js"></script>
+    <!-- <script>
+
+        //Apple pay
+      document.addEventListener('DOMContentLoaded', () => {
+    // Check if Apple Pay is available
+    if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+        document.getElementById('apple-pay-button').style.display = 'block'; // Show the button
+    }
+
+    const applePayButton = document.getElementById('apple-pay-button');
+    applePayButton.addEventListener('click', () => {
+        const cartTotalElement = document.getElementById('total-amount');
+const cartTotal = parseFloat(cartTotalElement.textContent.replace(' KD', '').trim()) || 0;
+
+// Use the cart total as the Apple Pay total
+const paymentRequest = {
+    countryCode: 'KW', // Your country code
+    currencyCode: 'KWD', // Your currency
+    total: {
+        label: 'A5 Burger', // Display name in Apple Pay
+        amount: cartTotal.toFixed(2), // Ensure it matches the cart total
+    },
+    supportedNetworks: ['visa', 'masterCard', 'amex'], // Payment networks
+    merchantCapabilities: ['supports3DS'], // Apple Pay capabilities
+};
+
+        const session = new ApplePaySession(3, paymentRequest);
+
+        session.onvalidatemerchant = (event) => {
+            // Validate the merchant session
+            fetch('/validate-merchant', {
+                method: 'POST',
+                body: JSON.stringify({ validationURL: event.validationURL }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((merchantSession) => {
+                    session.completeMerchantValidation(merchantSession);
+                })
+                .catch((error) => {
+                    console.error('Error validating merchant:', error);
+                });
+        };
+
+        session.onpaymentauthorized = (event) => {
+            const payment = event.payment;
+
+            // Process the payment
+            fetch('/process-payment', {
+                method: 'POST',
+                body: JSON.stringify(payment),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        session.completePayment(ApplePaySession.STATUS_SUCCESS);
+                        alert('Payment Successful!');
+                    } else {
+                        session.completePayment(ApplePaySession.STATUS_FAILURE);
+                        alert('Payment Failed!');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error processing payment:', error);
+                    session.completePayment(ApplePaySession.STATUS_FAILURE);
+                });
+        };
+
+        session.begin();
+    });
+});
+    </script> -->
+</body>
+</html>

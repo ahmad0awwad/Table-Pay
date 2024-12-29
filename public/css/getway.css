@@ -1,0 +1,210 @@
+/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-to-cart {
+    text-decoration: none;
+    color: #555;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+}
+
+.back-to-cart:hover {
+    color: #007bff;
+}
+
+.getway {
+    animation: fadeIn 1s ease-in-out;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.custom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.codes input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: box-shadow 0.3s;
+}
+
+.codes input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.codes p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.codes p:hover {
+    color: #007bff;
+}
+
+.head {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.cst-table {
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.table th, .table td {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.table th {
+    background-color: #f7f7f7;
+    color: #555;
+    font-size: 1rem;
+}
+
+.table td {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.table td:last-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+.Payment {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card_radio {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+    transition: box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.card_radio:hover {
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
+
+.radio_styl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.radio-style {
+    width: 18px;
+    height: 18px;
+    accent-color: #007bff;
+    cursor: pointer;
+}
+
+.radio-style-1-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+.Payment p {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #003f8c);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .codes input {
+        font-size: 0.9rem;
+    }
+
+    .table th, .table td {
+        padding: 10px;
+    }
+
+    .btn-primary {
+        font-size: 0.9rem;
+    }
+}

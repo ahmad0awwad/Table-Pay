@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Receipt</title>
+    <link rel="stylesheet" href="css/style.css">
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.receipt-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.receipt-header h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+.receipt-header p {
+    font-size: 16px;
+    color: #777;
+}
+
+.receipt-details p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.receipt-details p strong {
+    color: #333;
+}
+
+.receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.receipt-table th,
+.receipt-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.receipt-table th {
+    background: #f9f9f9;
+    font-weight: bold;
+    color: #333;
+}
+
+.receipt-table td {
+    color: #555;
+}
+
+.total {
+    text-align: right;
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.actions button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+    background-color: #45a049;
+}
+
+</style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <h1>Receipt</h1>
+            <p>Thank you for your purchase!</p>
+        </div>
+        <div class="receipt-details">
+            <p><strong>Order ID:</strong> <span id="order-id">#12345</span></p>
+            <p><strong>Payment Method:</strong> <span id="payment-method">Visa</span></p>
+            <p><strong>Date:</strong> <span id="date">2024-12-24</span></p>
+        </div>
+        <table class="receipt-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="receipt-items">
+                <!-- Dynamic rows will be added here -->
+            </tbody>
+        </table>
+        <div class="total">
+            <p><strong>Total Amount:</strong> <span id="total-amount">0 KD</span></p>
+        </div>
+        <div class="actions">
+            <button onclick="printReceipt()">Print Receipt</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+         
+            // Populate receipt data from localStorage
+            const receiptData = JSON.parse(localStorage.getItem('receiptData'));
+    
+            if (!receiptData) {
+                alert('No receipt data found.');
+                document.querySelector('.receipt-container').innerHTML = '<p>Error: No receipt data found.</p>';
+                return;
+            }
+    
+            // Populate receipt details
+            document.getElementById("order-id").textContent = receiptData.orderId || 'N/A';
+            document.getElementById("payment-method").textContent = receiptData.paymentMethod || 'N/A';
+            document.getElementById("date").textContent = receiptData.date || new Date().toLocaleDateString();
+    
+            // Populate receipt items
+            const receiptItemsContainer = document.getElementById("receipt-items");
+            receiptData.items.forEach(item => {
+                const row = `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.price.toFixed(2)} KD</td>
+                        <td>${(item.quantity * item.price).toFixed(2)} KD</td>
+                    </tr>
+                `;
+                receiptItemsContainer.insertAdjacentHTML("beforeend", row);
+            });
+    
+            // Populate total amount
+            document.getElementById("total-amount").textContent = `${receiptData.totalAmount.toFixed(2)} KD`;
+        });
+        console.log(localStorage.getItem('tableNumber'));
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    let tableNumber = urlParams.get('table');
+
+    if (!tableNumber) {
+        tableNumber = localStorage.getItem('tableNumber'); // Fallback to localStorage
+    }
+
+    if (!tableNumber) {
+        alert('Table number is missing! Redirecting to the menu.');
+        window.location.href = `menu.html?table=${tableNumber}`;
+        return;
+    }
+
+    // Save the table number in localStorage for persistence
+    localStorage.setItem('tableNumber', tableNumber);
+
+    // Display the table number on the receipt
+    const receiptHeader = document.querySelector('.receipt-header');
+    const tableInfo = document.createElement('p');
+    tableInfo.innerHTML = `<strong>Table Number:</strong> ${tableNumber}`;
+    receiptHeader.appendChild(tableInfo);
+
+    // (Optional) Add more logic to populate receipt details
+});
+
+// Function to print the receipt
+function printReceipt() {
+    window.print();
+}
+
+    </script>
+</body>
+</html>

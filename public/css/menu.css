@@ -1,0 +1,220 @@
+#categories-container, #products-container {
+    border: 1px solid red;
+}
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Categories Container */
+.categories {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.category {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 5px;
+    background-color: #e3e3e3;
+    border-radius: 15px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.category.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Products Container */
+/* Category Headers */
+.category-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: left;
+}
+
+/* Product Items */
+.product {
+    display: flex;
+    justify-content: space-between; /* Push price to the right */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.product img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    flex-shrink: 0; /* Prevent the image from shrinking */
+}
+
+.product-details {
+    flex: 1; /* Allow the name to take remaining space */
+    display: flex;
+    flex-direction: column; /* Stack name and title vertically */
+}
+
+.product-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.product-title:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+
+.product-price {
+    font-size: 1em;
+    color: #555;
+    white-space: nowrap; /* Prevent price from wrapping */
+    margin-left: 10px; /* Add some spacing from the name */
+}
+
+
+
+/* Scroll behavior */
+.categories::-webkit-scrollbar {
+    display: none;
+}
+
+.categories {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+/* Active Category */
+.category.active {
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+/* Category Title Styling */
+.category-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-align: left;
+    color: #444;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.quantity-control .btn {
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+.quantity-control .btn:hover {
+    background-color: #bbb;
+}
+
+.quantity-control .quantity {
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+/* Cart Icon Styling */
+#cart-icon {
+    position: fixed;
+    top: 2px;
+    right: 20px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+#cart-icon a {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+#cart-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.quantity-control .btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quantity-control .btn:hover {
+    background-color: #0056b3;
+}
+
+.quantity-control .quantity {
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
