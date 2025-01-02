@@ -140,6 +140,43 @@ fs.watch(menuPath, async (eventType) => {
         await syncJsonToDatabase();
     }
 });
+
+
+
+
+
+// const exportDatabaseToJson = async () => {
+//     try {
+//         console.log('Syncing menu.json with the database...');
+//         const categories = await Category.find().lean(); // Fetch all categories
+//         const menuData = { categories }; // Wrap data in an object for JSON structure
+
+//         fs.writeFileSync(menuPath, JSON.stringify(menuData, null, 2)); // Write to menu.json
+//         console.log('menu.json successfully updated!');
+//     } catch (error) {
+//         console.error('Error syncing menu.json:', error);
+//     }
+// };
+
+// categorySchema.post('save', async function () {
+//     await exportDatabaseToJson();
+// });
+
+// categorySchema.post('remove', async function () {
+//     await exportDatabaseToJson();
+// });
+
+
+
+
+
+
+
+
+
+
+
+
 // Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -194,15 +231,6 @@ app.get('/api/products/:id', async (req, res) => {
     }
 });
 
-// app.get('/admin/orders', async (req, res) => {
-//     try {
-//         const orders = await order.find().lean(); // Fetch all orders
-//         res.render('admin', { orders }); // Render the admin dashboard
-//     } catch (error) {
-//         console.error('Error fetching orders:', error);
-//         res.status(500).send('Error fetching orders.');
-//     }
-// });
 
 app.get('/generate-qr/:table', async (req, res) => {
     const tableNumber = req.params.table;
@@ -227,6 +255,17 @@ app.get('/api/orders', async (req, res) => {
     } catch (error) {
         console.error('Error fetching orders:', error);
         res.status(500).json({ error: 'Failed to fetch orders' });
+    }
+});
+
+
+app.get('/api/categories', async (req, res) => {
+    try {
+        const categories = await Category.find().lean();
+        res.status(200).json({ categories });
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).json({ error: 'Failed to fetch categories.' });
     }
 });
 
@@ -273,6 +312,158 @@ app.post('/api/orders', async (req, res) => {
         res.status(500).json({ error: 'Failed to create order' });
     }
 });
+
+
+
+app.post('/api/categories', async (req, res) => {
+    try {
+        const { name, name_arabic} = req.body;
+
+        if (!name) {
+            return res.status(400).json({ error: 'Category name is required.' });
+        }
+
+        const newCategory = new Category({
+            _id: new mongoose.Types.ObjectId().toString(),
+            name,
+            name_arabic,
+            products: []
+        });
+
+        await newCategory.save();
+        res.status(201).json({ message: 'Category created successfully.', category: newCategory });
+    } catch (error) {
+        console.error('Error creating category:', error);
+        res.status(500).json({ error: 'Failed to create category.' });
+    }
+});
+app.post('/api/categories/:id/products', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {
+            name,
+            name_arabic,
+            Picture,
+            images,
+            Video,
+            "Item Code / SKU": itemCode,
+            Description_English,
+            Description_Arabic,
+            price
+        } = req.body;
+
+        if (!name || !price) {
+            return res.status(400).json({ error: 'Product name and price are required.' });
+        }
+
+        const category = await Category.findById(id);
+        if (!category) {
+            return res.status(404).json({ error: 'Category not found.' });
+        }
+
+        const newProduct = {
+            _id: new mongoose.Types.ObjectId().toString(),
+            name,
+            name_arabic,
+            Picture,
+            images: images || [],
+            Video,
+            "Item Code / SKU": itemCode,
+            Description_English,
+            Description_Arabic,
+            price
+        };
+
+        category.products.push(newProduct);
+        await category.save();
+
+        res.status(201).json({ message: 'Product added successfully.', product: newProduct });
+    } catch (error) {
+        console.error('Error adding product:', error);
+        res.status(500).json({ error: 'Failed to add product.' });
+    }
+});
+app.put('/api/products/:productId', async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const { name, price, description } = req.body;
+
+        const category = await Category.findOne({ 'products._id': productId });
+        if (!category) {
+            return res.status(404).json({ error: 'Product not found.' });
+        }
+
+        const product = category.products.id(productId);
+        if (name) product.name = name;
+        if (price) product.price = price;
+        if (description) product.description = description;
+
+        await category.save();
+        res.json({ message: 'Product updated successfully', product });
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Failed to update product' });
+    }
+});
+
+app.put('/api/categories/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, name_arabic, description, description_arabic } = req.body;
+
+        const updatedCategory = await Category.findByIdAndUpdate(
+            id,
+            { name, name_arabic, description, description_arabic },
+            { new: true }
+        );
+
+        if (!updatedCategory) {
+            return res.status(404).json({ error: 'Category not found.' });
+        }
+
+        res.json({ message: 'Category updated successfully.', category: updatedCategory });
+    } catch (error) {
+        console.error('Error updating category:', error);
+        res.status(500).json({ error: 'Failed to update category.' });
+    }
+});
+
+app.delete('/api/products/:productId', async (req, res) => {
+    try {
+        const { productId } = req.params;
+
+        const category = await Category.findOne({ 'products._id': productId });
+        if (!category) {
+            return res.status(404).json({ error: 'Product not found.' });
+        }
+
+        category.products.id(productId).remove();
+        await category.save();
+
+        res.json({ message: 'Product deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Failed to delete product.' });
+    }
+});
+
+
+app.delete('/api/categories/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedCategory = await Category.findByIdAndDelete(id);
+        if (!deletedCategory) {
+            return res.status(404).json({ error: 'Category not found.' });
+        }
+
+        res.json({ message: 'Category deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting category:', error);
+        res.status(500).json({ error: 'Failed to delete category.' });
+    }
+});
+
 
 
 
