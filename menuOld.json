@@ -1,0 +1,187 @@
+{
+    "categories": [ 
+        {
+            "name": "Burgers",
+            "_id": "Burgers",
+            "name_arabic": "يرغر",
+           
+                    "products": [
+                        {
+                            "_id": "mash-bueger",
+                            "name": "mash-bueger",
+                            "name_arabic": "مشروم",
+                            "Picture": "/css/m.png",
+                            "Video": "", 
+                            "Item Code / SKU": "1",
+                          "Description_English": "ok",
+                          "price": "3 KD"
+                          
+                        },{
+                            "_id": "m-bueger",
+                            "name": "m-bueger",
+                            "name_arabic": "مشروم",
+                            "Picture": "",
+                            "Video": "", 
+                            "Item Code / SKU": "11",
+                          "Description_English": "ok",
+                          "price": "3 KD"
+                          
+                        },{
+                            "_id": "o-bueger",
+                            "name": "o-bueger",
+                            "name_arabic": "مشروم",
+                            "Picture": "",
+                            "Video": "", 
+                            "Item Code / SKU": "12",
+                          "Description_English": "ok",
+                          "price": "3 KD"
+                          
+                        },{
+                            "_id": "k-bueger",
+                            "name": "k-bueger",
+                            "name_arabic": "مشروم",
+                            "Picture": "",
+                            "Video": "", 
+                            "Item Code / SKU": "13",
+                          "Description_English": "ok",
+                          "price": "3 KD"
+                          
+                        },  {
+                            "_id": "spice-bueger",
+                            "name": "Spice-bueger",
+                            "name_arabic": "حار",
+                            "Picture": "",
+                            "Video": "", 
+                            "Item Code / SKU": "2",
+                          "Description_English": "ok",
+                          "price": "3 KD"
+                        },  {
+                            "_id": "no-bueger",
+                            "name": "no-bueger",
+                            "name_arabic": "لا",
+                            "Picture": "",
+                            "Video": "", 
+                            "Item Code / SKU": "9",
+                          "Description_English": "ok",
+                          "price": "3 KD"
+                        }
+                        ,  {
+                            "_id": "ok-bueger",
+                            "name": "ok-bueger",
+                            "name_arabic": "خن",
+                            "Picture": "",
+                            "Video": "", 
+                            "Item Code / SKU": "10",
+                          "Description_English": "ok",
+                          "price": "3 KD"
+                        }
+
+
+
+                       
+                    ]
+                }, {
+                    "name": "pizza",
+                    "_id": "pizza",
+                    "name_arabic": "بيتزا",
+                   
+                            "products": [
+                                {
+                                    "_id": "mash-pizza",
+                                    "name": "mash-pizza",
+                                    "name_arabic": "مشروم",
+                                    "Picture": "",
+                                    "Video": "", 
+                                    "Item Code / SKU": "3",
+                                  "Description_English": "ok",
+                                  "price": "2 KD"
+                                  
+                                },  {
+                                    "_id": "spice-pizza",
+                                    "name": "Spice-pizza",
+                                    "name_arabic": "حار",
+                                    "Picture": "",
+                                    "Video": "", 
+                                    "Item Code / SKU": "4",
+                                  "Description_English": "ok",
+                                  "price": "5 KD"
+                                },                                {
+                                    "_id": "no-pizza",
+                                    "name": "no-pizza",
+                                    "name_arabic": "لا",
+                                    "Picture": "",
+                                    "Video": "", 
+                                    "Item Code / SKU": "10",
+                                  "Description_English": "ok",
+                                  "price": "2 KD"
+                                  
+                                },                                {
+                                    "_id": "okk-pizza",
+                                    "name": "okk-pizza",
+                                    "name_arabic": "خن",
+                                    "Picture": "",
+                                    "Video": "", 
+                                    "Item Code / SKU": "11",
+                                  "Description_English": "ok",
+                                  "price": "2 KD"
+                                  
+                                }
+        
+        
+                               
+                            ]
+                        },  {
+                            "name": "Drinks",
+                            "_id": "drinks",
+                            "name_arabic": "مشروب",
+                           
+                                    "products": [
+                                        {
+                                            "_id": "«sama-cola",
+                                            "name": "Sama Cola",
+                                            "name_arabic": "سما",
+                                            "Picture": "",
+                                            "Video": "", 
+                                            "Item Code / SKU": "5",
+                                          "Description_English": "ok",
+                                          "price": "100 fils"
+                                          
+                                        },  {
+                                            "_id": "Kien-cola-diet",
+                                            "name": "Sama Cola Diet",
+                                            "name_arabic": "سما",
+                                            "Picture": "",
+                                            "Video": "", 
+                                            "Item Code / SKU": "6",
+                                          "Description_English": "ok",
+                                          "price": "100 fils"
+                                          
+                                        }, {
+                                            "_id": "«sama-orange",
+                                            "name": "Sama Orange",
+                                            "name_arabic": "سما",
+                                            "Picture": "",
+                                            "Video": "", 
+                                            "Item Code / SKU": "7",
+                                          "Description_English": "ok",
+                                          "price": "100 fils"
+                                          
+                                        }, {
+                                            "_id": "«sama-lemon",
+                                            "name": "Sama Lemom",
+                                            "name_arabic": "سما",
+                                            "Picture": "",
+                                            "Video": "", 
+                                            "Item Code / SKU": "8",
+                                          "Description_English": "ok",
+                                          "price": "150 fils"
+                                          
+                                        }
+                
+                
+                                       
+                                    ]
+                                }
+            ]
+
+                }

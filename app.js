@@ -55,91 +55,91 @@ app.get('/menu', async (req, res) => {
 
 
 
-//لتحديث الداتا بيس من ملف menu.json
-const isValidCategory = (category) => {
-    return category._id && category.name && Array.isArray(category.products);
-};
-const syncJsonToDatabase = async () => {
-    try {
-        console.log('Syncing database with menu.json...');
-        const jsonData = fs.readFileSync(menuPath, 'utf8');
-        const { categories: jsonCategories } = JSON.parse(jsonData);
+// //لتحديث الداتا بيس من ملف menu.json
+// const isValidCategory = (category) => {
+//     return category._id && category.name && Array.isArray(category.products);
+// };
+// const syncJsonToDatabase = async () => {
+//     try {
+//         console.log('Syncing database with menu.json...');
+//         const jsonData = fs.readFileSync(menuPath, 'utf8');
+//         const { categories: jsonCategories } = JSON.parse(jsonData);
 
-        console.log('Parsed categories from menu.json:', jsonCategories);
+//         console.log('Parsed categories from menu.json:', jsonCategories);
 
-        // Fetch all categories from the database
-        const dbCategories = await Category.find();
+//         // Fetch all categories from the database
+//         const dbCategories = await Category.find();
 
-        // Sync categories
-        for (const categoryData of jsonCategories) {
-            if (!isValidCategory(categoryData)) {
-                console.error(`Invalid category format: ${JSON.stringify(categoryData)}`);
-                continue; // Skip invalid entries
-            }
+//         // Sync categories
+//         for (const categoryData of jsonCategories) {
+//             if (!isValidCategory(categoryData)) {
+//                 console.error(`Invalid category format: ${JSON.stringify(categoryData)}`);
+//                 continue; // Skip invalid entries
+//             }
 
-            let category = await Category.findById(categoryData._id);
+//             let category = await Category.findById(categoryData._id);
 
-            if (!category) {
-                // Create a new category if it doesn't exist
-                console.log(`Creating new category: ${categoryData.name}`);
-                category = new Category(categoryData);
-            } else {
-                // Update existing category
-                console.log(`Updating existing category: ${categoryData.name}`);
-                category.name = categoryData.name;
-                category.name_arabic = categoryData.name_arabic;
-                category.description = categoryData.description;
-                category.description_arabic = categoryData.description_arabic;
+//             if (!category) {
+//                 // Create a new category if it doesn't exist
+//                 console.log(`Creating new category: ${categoryData.name}`);
+//                 category = new Category(categoryData);
+//             } else {
+//                 // Update existing category
+//                 console.log(`Updating existing category: ${categoryData.name}`);
+//                 category.name = categoryData.name;
+//                 category.name_arabic = categoryData.name_arabic;
+//                 category.description = categoryData.description;
+//                 category.description_arabic = categoryData.description_arabic;
 
-                // Sync products
-                for (const productData of categoryData.products) {
-                    const existingProduct = category.products.id(productData._id);
+//                 // Sync products
+//                 for (const productData of categoryData.products) {
+//                     const existingProduct = category.products.id(productData._id);
 
-                    if (!existingProduct) {
-                        console.log(`Adding new product: ${productData.name}`);
-                        category.products.push(productData);
-                    } else {
-                        console.log(`Updating product: ${productData.name}`);
-                        Object.assign(existingProduct, productData);
-                    }
-                }
+//                     if (!existingProduct) {
+//                         console.log(`Adding new product: ${productData.name}`);
+//                         category.products.push(productData);
+//                     } else {
+//                         console.log(`Updating product: ${productData.name}`);
+//                         Object.assign(existingProduct, productData);
+//                     }
+//                 }
 
-                // Remove products not in the JSON data
-                category.products = category.products.filter(product =>
-                    categoryData.products.some(jsonProduct => jsonProduct._id === product._id)
-                );
-            }
+//                 // Remove products not in the JSON data
+//                 category.products = category.products.filter(product =>
+//                     categoryData.products.some(jsonProduct => jsonProduct._id === product._id)
+//                 );
+//             }
 
-            await category.save();
-        }
+//             await category.save();
+//         }
 
-        // Delete categories that are not in the JSON data
-        for (const dbCategory of dbCategories) {
-            if (!jsonCategories.some(jsonCategory => jsonCategory._id === dbCategory._id)) {
-                console.log(`Deleting category: ${dbCategory.name}`);
-                await Category.findByIdAndDelete(dbCategory._id);
-            }
-        }
+//         // Delete categories that are not in the JSON data
+//         for (const dbCategory of dbCategories) {
+//             if (!jsonCategories.some(jsonCategory => jsonCategory._id === dbCategory._id)) {
+//                 console.log(`Deleting category: ${dbCategory.name}`);
+//                 await Category.findByIdAndDelete(dbCategory._id);
+//             }
+//         }
 
-        console.log('Database successfully synced with menu.json');
-    } catch (error) {
-        console.error('Error syncing menu.json to database:', error);
-    }
-};
+//         console.log('Database successfully synced with menu.json');
+//     } catch (error) {
+//         console.error('Error syncing menu.json to database:', error);
+//     }
+// };
 
-syncJsonToDatabase();
-
-
+// syncJsonToDatabase();
 
 
 
-// Watch for changes in `menu.json`
-fs.watch(menuPath, async (eventType) => {
-    if (eventType === 'change') {
-        console.log('menu.json file changed. Syncing to database...');
-        await syncJsonToDatabase();
-    }
-});
+
+
+// // Watch for changes in `menu.json`
+// fs.watch(menuPath, async (eventType) => {
+//     if (eventType === 'change') {
+//         console.log('menu.json file changed. Syncing to database...');
+//         await syncJsonToDatabase();
+//     }
+// });
 
 
 
@@ -178,6 +178,25 @@ fs.watch(menuPath, async (eventType) => {
 
 
 // Ensure uploads directory exists
+
+const exportDatabaseToJson = async () => {
+    try {
+        console.log('Exporting database to menu.json...');
+        const categories = await Category.find().lean(); // Fetch all categories and products
+        const menuData = { categories };
+
+        fs.writeFileSync(menuPath, JSON.stringify(menuData, null, 2)); // Write to menu.json
+        console.log('menu.json updated successfully!');
+    } catch (error) {
+        console.error('Error exporting database to menu.json:', error);
+    }
+};
+
+
+
+
+
+
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
@@ -317,7 +336,7 @@ app.post('/api/orders', async (req, res) => {
 
 app.post('/api/categories', async (req, res) => {
     try {
-        const { name, name_arabic} = req.body;
+        const { name, name_arabic, description, description_arabic } = req.body;
 
         if (!name) {
             return res.status(400).json({ error: 'Category name is required.' });
@@ -327,16 +346,21 @@ app.post('/api/categories', async (req, res) => {
             _id: new mongoose.Types.ObjectId().toString(),
             name,
             name_arabic,
-            products: []
+            description,
+            description_arabic,
+            products: [] // Initialize with an empty products array
         });
 
         await newCategory.save();
+        await exportDatabaseToJson(); // Sync to menu.json
+
         res.status(201).json({ message: 'Category created successfully.', category: newCategory });
     } catch (error) {
         console.error('Error creating category:', error);
         res.status(500).json({ error: 'Failed to create category.' });
     }
 });
+
 app.post('/api/categories/:id/products', async (req, res) => {
     try {
         const { id } = req.params;
@@ -376,6 +400,8 @@ app.post('/api/categories/:id/products', async (req, res) => {
 
         category.products.push(newProduct);
         await category.save();
+        await exportDatabaseToJson(); // Sync to menu.json
+
 
         res.status(201).json({ message: 'Product added successfully.', product: newProduct });
     } catch (error) {
@@ -420,6 +446,7 @@ app.put('/api/categories/:id', async (req, res) => {
         if (!updatedCategory) {
             return res.status(404).json({ error: 'Category not found.' });
         }
+        await exportDatabaseToJson(); // Sync to menu.json
 
         res.json({ message: 'Category updated successfully.', category: updatedCategory });
     } catch (error) {
@@ -456,6 +483,7 @@ app.delete('/api/categories/:id', async (req, res) => {
         if (!deletedCategory) {
             return res.status(404).json({ error: 'Category not found.' });
         }
+        await exportDatabaseToJson(); // Sync to menu.json
 
         res.json({ message: 'Category deleted successfully.' });
     } catch (error) {

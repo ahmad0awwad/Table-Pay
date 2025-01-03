@@ -133,3 +133,24 @@ form button[type="submit"]:hover {
         font-size: 18px;
     }
 }
+
+    #categories-container, #products-container {
+        margin-bottom: 20px;
+    }
+
+    .category {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+        }
+

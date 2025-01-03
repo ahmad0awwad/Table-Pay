@@ -40,6 +40,10 @@
         <input type="number" name="price" placeholder="Price" required>
         <button type="submit">Add Product</button>
     </form>
+    <h2>Products</h2>
+<div id="products-container">
+    <!-- Products will be dynamically rendered here -->
+</div>
     
 
 <script>
@@ -68,38 +72,86 @@
     }
     
     // Add Product Handler
-    document.getElementById('add-product-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-    
-        const formData = new FormData(e.target);
-        const categoryId = formData.get('category'); // Get the selected category ID
-        if (!categoryId) {
-            alert('Please select a category.');
-            return;
+    document.getElementById('add-category-form').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(e.target);
+
+    try {
+        const response = await fetch('/api/categories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(formData)),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
-        formData.delete('category'); // Remove category ID from the form data, as it's part of the URL
-    
-        try {
-            const response = await fetch(`/api/categories/${categoryId}/products`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(Object.fromEntries(formData)),
+
+        alert('Category added successfully!');
+        e.target.reset(); // Reset the form
+        fetchAndRenderData(); // Refresh categories and products on the page
+    } catch (error) {
+        console.error('Error adding category:', error);
+        alert('Failed to add category. Please try again.');
+    }
+});
+
+    // Fetch Categories and Products
+async function fetchAndRenderData() {
+    try {
+        const response = await fetch('/api/categories');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const { categories } = await response.json();
+
+        // Render Categories
+        const categoriesContainer = document.getElementById('categories-container');
+        categoriesContainer.innerHTML = ''; // Clear previous content
+
+        categories.forEach(category => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category';
+            categoryDiv.innerHTML = `
+                <h3>${category.name} (${category.name_arabic || ''})</h3>
+                <p>${category.description || ''}</p>
+                <p>${category.description_arabic || ''}</p>
+            `;
+            categoriesContainer.appendChild(categoryDiv);
+        });
+
+        // Render Products
+        const productsContainer = document.getElementById('products-container');
+        productsContainer.innerHTML = ''; // Clear previous content
+
+        categories.forEach(category => {
+            const productList = document.createElement('ul');
+            productList.innerHTML = `<h4>${category.name}</h4>`;
+
+            category.products.forEach(product => {
+                const productItem = document.createElement('li');
+                productItem.innerHTML = `
+                    <strong>${product.name}</strong> (${product.name_arabic || ''}) - ${product.price} USD
+                    <p>${product.Description_English || ''}</p>
+                    <p>${product.Description_Arabic || ''}</p>
+                    <img src="${product.Picture || ''}" alt="${product.name}" style="width: 100px; height: auto;">
+                `;
+                productList.appendChild(productItem);
             });
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-    
-            alert('Product added successfully!');
-            e.target.reset(); // Reset the form
-            fetchCategories(); // Refresh categories if needed
-        } catch (error) {
-            console.error('Error adding product:', error);
-            alert('Failed to add product. Please try again.');
-        }
-    });
-    
+
+            productsContainer.appendChild(productList);
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        alert('Failed to load categories and products.');
+    }
+}
+
+// Fetch and render data on page load
+document.addEventListener('DOMContentLoaded', fetchAndRenderData);
+
     // Fetch categories when the page loads
     document.addEventListener('DOMContentLoaded', fetchCategories);
 </script>    
