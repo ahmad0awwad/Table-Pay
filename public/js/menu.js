@@ -229,10 +229,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-
-
-
-
 // document.querySelector('#Clear').addEventListener('click', function (event) {
 //      event.preventDefault();
 
